@@ -1,0 +1,14 @@
+.board tr td{
+    background-color: rgb(43, 122, 122);
+    height: 30px;
+    width: 30px;
+}
+
+
+
+
+.cell{
+display: block;
+background-color: blueviolet;
+}
+
