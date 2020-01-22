@@ -20,6 +20,7 @@ var gGame = {
     secsPassed: 0
 }
 
+
 function initGame() {
     gBoard = createBoard()
     console.table(gBoard)
@@ -27,15 +28,6 @@ function initGame() {
     gGame.isOn = true
     console.log('init game')
 
-}
-
-// ADD MINES TO ARRAY
-function setMines(limitNum) {
-    var mines = []
-    for (var i = 0; i < limitNum; i++) {
-        mines.push(MINES)
-    }
-    return mines
 }
 
 
@@ -47,6 +39,7 @@ function createBoard() {
         board[i] = [];
         for (var j = 0; j < SIZE; j++) {
             board[i][j] = createCell()
+            
         }
     }
 
@@ -62,9 +55,9 @@ function addMines() {
     var getRandPosJ = getRandomInt(0, gLevel.SIZE ** 2 - 1)
     var posMines = { i: getRandPosI, j: getRandPosJ }
 
-    // while (0 < 2) {
-    //     var res = renderCell(posMines, MINES)
-    // }
+    while (0 > 2) {
+        var res = renderCell(posMines, MINES)
+    }
     return res
 }
 
@@ -73,12 +66,14 @@ function renderBoard(board) {
     var elBorad = document.querySelector('.board')
     var size = gLevel.SIZE
     var strHTML = ''
+
     for (var i = 0; i < size; i++) {
         strHTML += '<tr>'
         for (var j = 0; j < size; j++) {
-
+            var cell = gBoard[i][j]
             var className = `cell-${i}-${j}`
-            console.log('cell')
+            if (cell === EMPTY) 
+                console.log('cell')
 
             strHTML +=
                 `<td class="${className}"
@@ -122,12 +117,10 @@ function setMinesNegsCount() {
 
 
 
-
 function cellClicked(elCell, posI, posJ) {
     var pos = { i: posI, j: posJ };
 
     console.log('cellClicked', elCell, pos)
-
 }
 
 function cellMarked(elCell) {

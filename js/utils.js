@@ -10,31 +10,28 @@ function renderCell(pos, val) {
 
 
 
-
 function getClassName(location) {
 	var cellClass = 'cell-' + location.i + '-' + location.j;
 	return cellClass;
 }
 
 
-
-
-function createBoard() {
-    var board = [];
-    const SIZE = gLevel.SIZE;
-    for (var i = 0; i < SIZE; i++) {
-        board[i] = [];
-        for (var j = 0; j < SIZE; j++) {
-            board[i][j] = cellObject;
-            if (board[i][j] === MINES) {
-                cellObject.isShown = false
-            }
-            console.log(cellObject.isShown)
+// function createBoard() {
+//     var board = [];
+//     const SIZE = gLevel.SIZE;
+//     for (var i = 0; i < SIZE; i++) {
+//         board[i] = [];
+//         for (var j = 0; j < SIZE; j++) {
+//             board[i][j] = cellObject;
+//             if (board[i][j] === MINES) {
+//                 cellObject.isShown = false
+//             }
+//             console.log(cellObject.isShown)
             
-        }
-    } 
-    return board;
-}
+//         }
+//     } 
+//     return board;
+// }
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
