@@ -1,10 +1,17 @@
 'use strict'
 
 //game 
-var MINES = 'X'
-var EMPTY = " "
-
+var MINES = '💣'
+var FLAG = 'P'
 var gBoard = []
+var gNextClick = 0
+
+
+var timeBegan = null
+    , timeStopped = null
+    , stoppedDuration = 0
+    , started = null;
+
 
 //object
 var gLevel = {
@@ -21,95 +28,119 @@ var gGame = {
 }
 
 
+
 function initGame() {
     gBoard = createBoard()
-    console.table(gBoard)
+    setMines()
+    gGame.isOn = true;
     renderBoard(gBoard)
-    gGame.isOn = true
-    console.log('init game')
-
+    console.table(gBoard);
 }
 
 
-
-function createBoard() {
-    var board = [];
-    const SIZE = gLevel.SIZE;
-    for (var i = 0; i < SIZE; i++) {
-        board[i] = [];
-        for (var j = 0; j < SIZE; j++) {
-            board[i][j] = createCell()
-            
-        }
-    }
-
-    var elCell = document.querySelector('.cell')
-    console.log('renderCell', elCell)
-    board[1][2] === MINES
-    board[2][2] === MINES
-    return board;
-}
-// ADD MINES TO RANDOM POS
-function addMines() {
-    var getRandPosI = getRandomInt(0, gLevel.SIZE ** 2 - 1)
-    var getRandPosJ = getRandomInt(0, gLevel.SIZE ** 2 - 1)
-    var posMines = { i: getRandPosI, j: getRandPosJ }
-
-    while (0 > 2) {
-        var res = renderCell(posMines, MINES)
-    }
-    return res
-}
-
-// ${i} - ${j}
-function renderBoard(board) {
-    var elBorad = document.querySelector('.board')
-    var size = gLevel.SIZE
-    var strHTML = ''
-
-    for (var i = 0; i < size; i++) {
-        strHTML += '<tr>'
-        for (var j = 0; j < size; j++) {
-            var cell = gBoard[i][j]
-            var className = `cell-${i}-${j}`
-            if (cell === EMPTY) 
-                console.log('cell')
-
-            strHTML +=
-                `<td class="${className}"
-            onclick="cellClicked(this, ${i}, ${j})">
-            ${EMPTY}
-            </td> `
-        }
-        strHTML += '</tr>'
-    }
-    elBorad.innerHTML = strHTML
-
-    // console.log('renderBoard', board)
-}
-
-
-function createCell() {
+function createCell(board, i, j) {
     var cell = {
-        minesAroundCount: setMinesNegsCount(),
+        minesAroundCount: 0,
         isShown: false,
         isMine: false,
-        isMarked: false
+        isMarked: false,
+        i: i,
+        j: j
     }
     return cell
 }
 
 
+function renderBoard(board) {
+    // var elCell = document.querySelector(setMines)
+    var elBorad = document.querySelector('.board')
+    var size = gLevel.SIZE
+    var strHTML = ''
+    for (var i = 0; i < size; i++) {
+        strHTML += '<tr>'
+        for (var j = 0; j < size; j++) {
 
+            var cell = gBoard[i][j]
+            var tdId = `cell-${i}-${j}`;
+            var className = (cell.isShown === false) ? ' hidden' : 'cell'
+            cell = ''
+            strHTML += `<td id="${tdId}`
+            strHTML += `"class="${className}"
+            onclick="cellClicked(this, ${i}, ${j} )">
+            ${cell}
+            </td> `
+            console.log('class', className)
+        }
+        strHTML += '</tr>'
+    }
+    // elCell.innerHTML = ''
+    elBorad.innerHTML = strHTML
+}
+
+
+
+function findEmptyPos(pos) {
+    pos = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            var cell = gBoard[i][j]
+            if (cell.isMine === false) {
+                pos.push(pos)
+            }
+        }
+    }
+    return pos
+}
+
+
+
+
+//  working
 function setMinesNegsCount() {
+    for (let i = 0; i < gBoard.length; i++) {
+        for (let j = 0; j < gBoard[i].length; j++) {
+            var minesAround = MinesNegsCountAround(gBoard, i, j)
+            gBoard[i][j].minesAroundCount = minesAround;
+            console.log('mines', minesAround);
+        } return minesAround
+    }
+}
+
+
+
+
+
+
+function setMines() {
+    for (var i = 0; i < gLevel.MINES; i++) {
+        var randomPos = getRandMinePos()
+        findEmptyPos(randomPos)
+    } return
+}
+
+// ADD MINES TO RANDOM POS for mines/// 
+function getRandMinePos() {
+    var getRandPosJ = getRandomInt(0, gLevel.SIZE - 1)
+    var getRandPosI = getRandomInt(0, gLevel.SIZE - 1)
+    var loctions = [getRandPosI, getRandPosJ]
+    isMine(loctions)
+    console.log('randomMINES', getRandPosI, getRandPosJ);
+}
+
+function isMine(loction) {
+    gBoard[loction[0]][loction[1]].isMine = true
+}
+
+
+function MinesNegsCountAround(board, rowIdx, colIdx) {
     var count = 0
-    for (var i = i - 1; i <= i + 1; i++) {
-        if (i < 0 || i >= gBoard.length) continue;
-        for (var j = j - 1; j <= j + 1; j++) {
-            if (j < 0 || j >= gBoard[0].length) continue;
-            if (i === i && j === j) continue;
-            if (gBoard[i][j] === MINES) count++;
-            console.log();
+    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+        if (i < 0 || i >= board.length) continue;
+        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+
+            if (j < 0 || j >= board[0].length) continue;
+            if (i === rowIdx && j === colIdx) continue;
+            if (board[i][j].isMine) count++;
         }
     }
     return count;
@@ -117,11 +148,37 @@ function setMinesNegsCount() {
 
 
 
-function cellClicked(elCell, posI, posJ) {
-    var pos = { i: posI, j: posJ };
 
-    console.log('cellClicked', elCell, pos)
+function isMarked(loction) {
+    gBoard[loction[0]][loction[0]].isMarked = true
 }
+
+
+
+
+function renderCell(location, value) {
+    // Select the elCell and set the value
+    var elCell = document.querySelector(`.cell${location.i}-${location.j}`);
+    elCell.innerHTML = value;
+}
+
+function cellClicked(elCell, i, j) {
+    var cell = gBoard[i][j]
+    gNextClick++
+    // start() // Timer
+    if (gNextClick === 1) {
+        setMines()
+        MinesNegsCountAround(gBoard, i, j)
+        console.log('nextclick', gNextClick);
+    }
+    if (elCell === cell.isMine) {
+        console.log('cell', elCell);
+        renderCell(elCell, MINES)
+
+    }
+}
+//     var pos = { i: posI, j: posJ };
+
 
 function cellMarked(elCell) {
     console.log('cellMarked', elCell)
@@ -140,5 +197,23 @@ function expandShown(board, elCell, i, j) {
 
 function resetGame() {
     console.log('reset Game')
-
 }
+
+
+
+
+
+function createBoard() {
+    var board = [];
+    const SIZE = gLevel.SIZE;
+    for (var i = 0; i < SIZE; i++) {
+        board[i] = [];
+        for (var j = 0; j < SIZE; j++) {
+            board[i][j] = createCell(i, j)
+        }
+    }
+    return board;
+}
+
+
+

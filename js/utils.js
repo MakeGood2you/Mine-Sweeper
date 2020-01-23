@@ -1,13 +1,6 @@
 'use strict'
 
 
-function renderCell(pos, val) {
-    
-    var elCell = document.querySelector(`.cell-${pos.i}-${pos.j}`);
-    elCell.innerText = val;
-    console.log('renderCell', pos, val)
-}
-
 
 
 function getClassName(location) {
@@ -16,22 +9,7 @@ function getClassName(location) {
 }
 
 
-// function createBoard() {
-//     var board = [];
-//     const SIZE = gLevel.SIZE;
-//     for (var i = 0; i < SIZE; i++) {
-//         board[i] = [];
-//         for (var j = 0; j < SIZE; j++) {
-//             board[i][j] = cellObject;
-//             if (board[i][j] === MINES) {
-//                 cellObject.isShown = false
-//             }
-//             console.log(cellObject.isShown)
-            
-//         }
-//     } 
-//     return board;
-// }
+
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -53,41 +31,44 @@ function blowUpNegs(posI, posJ) {
 }
 
 
-
-
-
-
-
-
-function setMinesNegsCount(board) {
-    // var elCell = document.querySelector('.cell')
-    var neighborsCount = 0
-    for (var i = posI - 1; i <= posI + 1; i++) {
-        if (i < 0 || i >= gBoard.length) continue;
-        for (var j = posJ - 1; j <= posJ + 1; j++) {
-            if (j < 0 || j >= gBoard.length) continue;
-            if (i === posI && j === posJ) continue;
-            if (elCell[i][j] === MINES) neighborsCount++
-        }
+// TIMER
+function startTimer() {
+    if (timeBegan === null) {
+        timeBegan = new Date();
     }
-    return neighborsCount
+
+    if (timeStopped !== null) {
+        stoppedDuration += (new Date() - timeStopped);
+    }
+    console.log(stoppedDuration);
+
+    started = setInterval(clockRunning, 10);
 }
 
+function stop() {
+    timeStopped = new Date();
+    clearInterval(started);
+}
 
-function addRandMines() {
-    var locations = findEmptyPos()
-    var getRandomPos = getRandomInt(0, locations.length)
-    var location = locations[getRandomPos]
-    locations.splice(getRandomPos, 1)
-    console.log(location, 'is locaion')
-    renderCell(location, CHERRY)
-    
+function reset() {
+    clearInterval(started);
+    stoppedDuration = 0;
+    timeBegan = null;
+    timeStopped = null;
+    document.querySelector('.timer').innerHTML = '00:00:00.000';
+}
 
+function clockRunning() {
+    var currentTime = new Date()
+        , timeElapsed = new Date(currentTime - timeBegan - stoppedDuration)
+        , hour = timeElapsed.getUTCHours()
+        , min = timeElapsed.getUTCMinutes()
+        , sec = timeElapsed.getUTCSeconds()
+        , ms = timeElapsed.getUTCMilliseconds();
 
-    // function randMines(board) {
-    //     var randIdx = getRandomInt(0, board.length)
-    //     var MINES = board[randIdx]
-    //     board.splice(randIdx, 1)
-    //     return MINES
-    // }
-  }
+    document.querySelector('.timer').innerHTML =
+        (hour > 9 ? hour : "0" + hour) + ":" +
+        (min > 9 ? min : "0" + min) + ":" +
+        (sec > 9 ? sec : "0" + sec) + "." +
+        (ms > 99 ? ms : ms > 9 ? "0" + ms : "00" + ms);
+};
