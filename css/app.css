@@ -1,14 +1,126 @@
-.board tr td{
+body{
+    background-image: radial-gradient(blue, white);
+
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+.board tr {
+    
     background-color: rgb(43, 122, 122);
     height: 30px;
     width: 30px;
 }
 
 
-/* 
+td {
+    cursor: pointer;
 
-.cell{
-display: block;
-background-color: blueviolet;
+    height: 30px;
+    width: 30px;
+    border-radius: 20%;
+    text-align: center;
+    visibility: visible;
 }
- */
+td:hover{
+    cursor: pointer;
+
+    background-color: rgb(60, 57, 207);
+    transition: 0.5s, 0.5s ;
+    transition: height 1s, width 0.5s ;
+}
+
+.reset{
+    margin-top: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    color: aliceblue;
+    background-color: rgb(107, 130, 233);
+    height: 40px;
+    width: 80px;
+    border-radius: 20%;
+    border: 0px;
+    cursor: pointer;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.6s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+  }
+
+
+  .reset:hover{
+    transition: height 0.5s, width 0.5s;
+    background-color:#002060 ;
+    text-align: center;
+    cursor: pointer;
+  }
+
+
+.count-click{
+    border-radius: 20%;
+
+    background-color: lightgreen;
+    font-size: 30px;
+}
+
+  .smiley{
+      font-size: 30px;
+    cursor: pointer;
+    margin-right: 50px;
+
+  }
+.timer{
+    cursor: pointer;
+
+    border-radius: 20%;
+    border: 3px solid blue;
+    margin-right: 50px;
+    font-size: 18px;
+    background-color: lightblue;
+}
+
+/* The Modal (background) */
+.modal {
+  
+    display: none; 
+    position: fixed; 
+    z-index: 1;
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(49, 32, 32); 
+    background-color: rgba(114, 106, 223, 0.4);
+  }
+  
+  .modal h1{
+    text-align: center;
+    color: blanchedalmond;
+  }
+  
+  .modal-content {
+    border-radius: 20%;
+    position: relative;
+    background-image: radial-gradient(blue, white);
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.6s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+  }
+  
+  @-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+  }
+  
+  @keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+  }

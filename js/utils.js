@@ -1,12 +1,8 @@
 'use strict'
-
-
-
-
-function getClassName(location) {
-	var cellClass = 'cell-' + location.i + '-' + location.j;
-	return cellClass;
-}
+var timeBegan = null
+    , timeStopped = null
+    , stoppedDuration = 0
+    , started = null;
 
 
 
@@ -18,16 +14,17 @@ function getRandomInt(min, max) {
 }
 
 
-function blowUpNegs(posI, posJ) {
-    for (var i = posI - 1; i <= posI + 1; i++) {
-        if (i < 0 || i >= gBoard.length) continue;
-        for (var j = posJ - 1; j <= posJ + 1; j++) {
-            if (j < 0 || j >= gBoard.length) continue;
-            if (i === posI && j === posJ) continue;
-            if (gBoard[i][j] === EMPTY) gBoard[i][j] = EMPTY;
-        }
-    }
-    renderBoard();
+function closeModal() {
+    var elModal = document.querySelector(".modal");
+    elModal.style.display = 'none'
+
+}
+
+function showModal(text) {
+    var h1 = document.querySelector('.modal h1')
+    var elModal = document.querySelector(".modal");
+    h1.innerText = text
+    return elModal.style.display = 'block'
 }
 
 
@@ -45,12 +42,15 @@ function startTimer() {
     started = setInterval(clockRunning, 10);
 }
 
-function stop() {
+
+
+function stopTimer() {
     timeStopped = new Date();
     clearInterval(started);
 }
 
-function reset() {
+
+function resetTimer() {
     clearInterval(started);
     stoppedDuration = 0;
     timeBegan = null;
